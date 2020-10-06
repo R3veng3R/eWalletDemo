@@ -16,16 +16,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and().httpBasic();
+        httpSecurity.headers().frameOptions().disable();
 
+        httpSecurity.csrf().disable()
+                .authorizeRequests()
+                    .antMatchers("/h2-console/**")
+                    .permitAll()
+                    .and()
+                .authorizeRequests()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                .httpBasic();
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder authentication)
-            throws Exception
-    {
+    public void configureGlobal(AuthenticationManagerBuilder authentication) throws Exception {
         authentication.inMemoryAuthentication()
                 .withUser("user")
                 .password(passwordEncoder().encode("123123"))
