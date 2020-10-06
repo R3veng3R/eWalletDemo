@@ -1,6 +1,6 @@
-package com.kn.eWallet.service;
+package com.kn.ewallet.service;
 
-import com.kn.eWallet.model.User;
+import com.kn.ewallet.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

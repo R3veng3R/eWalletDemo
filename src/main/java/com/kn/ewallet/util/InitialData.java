@@ -1,9 +1,9 @@
-package com.kn.eWallet.util;
+package com.kn.ewallet.util;
 
-import com.kn.eWallet.model.User;
-import com.kn.eWallet.model.Wallet;
-import com.kn.eWallet.repository.UserRepository;
-import com.kn.eWallet.repository.WalletRepository;
+import com.kn.ewallet.model.User;
+import com.kn.ewallet.model.Wallet;
+import com.kn.ewallet.repository.UserRepository;
+import com.kn.ewallet.repository.WalletRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;

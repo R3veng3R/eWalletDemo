@@ -1,8 +1,8 @@
-package com.kn.eWallet.service;
+package com.kn.ewallet.service;
 
-import com.kn.eWallet.model.User;
-import com.kn.eWallet.model.dto.UserDTO;
-import com.kn.eWallet.repository.UserRepository;
+import com.kn.ewallet.model.User;
+import com.kn.ewallet.model.dto.UserDTO;
+import com.kn.ewallet.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
