@@ -3,6 +3,9 @@ import {LoginForm} from "../components/LoginForm";
 import {FormikValues} from "formik";
 import styled from "styled-components";
 import {Redirect, RouteComponentProps, withRouter} from "react-router";
+import {authenticate, saveAuthData} from "../utils/Auth";
+import {Api} from "../utils/Api";
+import {User} from "../types";
 
 const Container = styled.div`
   max-width: 30%;
@@ -12,17 +15,23 @@ const Container = styled.div`
 export const Login: React.FC<RouteComponentProps> = () => {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
-    const logIn = async (formValues: FormikValues) => {
-        localStorage.setItem('user', formValues.name);
-        localStorage.setItem('password', formValues.password);
-        sessionStorage.setItem('isAuthenticated', 'true');
-        setLoggedIn(true);
+    const login = async (formValues: FormikValues) => {
+        saveAuthData(formValues);
+        const result = await Api.get("/api/user");
+
+        if (result.status === 200) {
+            const user: User = result.data;
+            authenticate(user);
+            setLoggedIn(true);
+        } else {
+            // TODO: error
+        }
     }
 
     return (
         <Container>
-            <LoginForm onSubmit={ logIn } />
-            {isLoggedIn ? <Redirect to="/" /> : null}
+            <LoginForm onSubmit={ login } />
+            { isLoggedIn ? <Redirect to="/" /> : null }
         </Container>
     );
 }

@@ -1,5 +1,6 @@
 package com.kn.eWallet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +30,10 @@ public class User {
     private UUID id;
 
     private String name;
+
+    @JsonIgnore
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Wallet> wallets;
 }

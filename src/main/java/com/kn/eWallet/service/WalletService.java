@@ -5,6 +5,7 @@ import com.kn.eWallet.model.Wallet;
 import com.kn.eWallet.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class WalletService {
         return walletRepository.findAllByUser(user);
     }
 
+    @Transactional
     public Wallet saveWallet(final User user) {
         final Wallet wallet = Wallet.builder()
                 .balance(0.00)
@@ -34,6 +36,7 @@ public class WalletService {
         return walletRepository.findById(uuid);
     }
 
+    @Transactional
     public boolean addBalance(final UUID uuid, double amount) {
         final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
 
@@ -49,6 +52,7 @@ public class WalletService {
         return false;
     }
 
+    @Transactional
     public boolean withdraw(final UUID uuid, final double amount) {
         final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
 

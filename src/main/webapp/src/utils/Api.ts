@@ -6,14 +6,12 @@ export const Api = axios.create({
 });
 
 Api.interceptors.request.use(config => {
-        debugger;
         const username = localStorage.getItem("user");
         const password = localStorage.getItem("password");
 
         if (username && password) {
             config.auth = {
-                username,
-                password
+                username, password
             }
         }
 

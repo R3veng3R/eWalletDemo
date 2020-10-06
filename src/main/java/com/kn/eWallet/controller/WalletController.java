@@ -1,6 +1,5 @@
 package com.kn.eWallet.controller;
 
-import com.kn.eWallet.model.User;
 import com.kn.eWallet.model.Wallet;
 import com.kn.eWallet.service.WalletService;
 import org.springframework.http.HttpStatus;
