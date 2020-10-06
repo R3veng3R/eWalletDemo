@@ -1,4 +1,4 @@
-package com.kn.eWallet;
+package com.kn.ewallet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,7 @@
-package com.kn.eWallet.controller;
+package com.kn.ewallet.controller;
 
-import com.kn.eWallet.model.User;
-import com.kn.eWallet.model.dto.UserDTO;
-import com.kn.eWallet.service.UserService;
+import com.kn.ewallet.model.dto.UserDTO;
+import com.kn.ewallet.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

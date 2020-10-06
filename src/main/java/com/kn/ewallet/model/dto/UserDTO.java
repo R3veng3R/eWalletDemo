@@ -1,4 +1,4 @@
-package com.kn.eWallet.model.dto;
+package com.kn.ewallet.model.dto;
 
 import lombok.*;
 

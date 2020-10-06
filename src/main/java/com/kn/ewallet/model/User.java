@@ -1,5 +1,6 @@
-package com.kn.eWallet.model;
+package com.kn.ewallet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,9 +16,9 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = Wallet.TABLE_NAME)
-public class Wallet {
-    public static final String TABLE_NAME = "wallets";
+@Table(name= User.TABLE_NAME)
+public class User {
+    public static final String TABLE_NAME = "users";
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -27,9 +29,11 @@ public class Wallet {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    private double balance;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    private User user;
+    @JsonIgnore
+    private String password;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Wallet> wallets;
 }

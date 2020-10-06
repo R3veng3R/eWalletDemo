@@ -1,11 +1,8 @@
-package com.kn.eWallet.service;
+package com.kn.ewallet.service;
 
-import com.kn.eWallet.model.User;
-import com.kn.eWallet.model.Wallet;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Before;
+import com.kn.ewallet.model.User;
+import com.kn.ewallet.model.Wallet;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
