@@ -1,12 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { HomePage } from "./pages/Home";
+import {createGlobalStyle} from "styled-components";
+
+const GlobalStyles = createGlobalStyle`
+    body {
+      margin: 0;
+      font-size: 1rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f8f8f8;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+`;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <GlobalStyles />
+      <HomePage />
   </React.StrictMode>,
   document.getElementById('root')
 );
