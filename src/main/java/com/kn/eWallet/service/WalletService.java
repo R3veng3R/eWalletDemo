@@ -5,6 +5,7 @@ import com.kn.eWallet.model.Wallet;
 import com.kn.eWallet.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +15,10 @@ public class WalletService {
 
     public WalletService(final WalletRepository walletRepository) {
         this.walletRepository = walletRepository;
+    }
+
+    public List<Wallet> getUserWallets(final User user) {
+        return walletRepository.findAllByUser(user);
     }
 
     public Wallet saveWallet(final User user) {

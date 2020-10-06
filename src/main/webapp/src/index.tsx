@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import { HomePage } from "./pages/Home";
 import {createGlobalStyle} from "styled-components";
+import {Routes} from "./router/Routes";
+import {BrowserRouter as Router} from "react-router-dom";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const GlobalStyles = createGlobalStyle`
     body {
@@ -24,7 +27,9 @@ const GlobalStyles = createGlobalStyle`
 ReactDOM.render(
   <React.StrictMode>
       <GlobalStyles />
-      <HomePage />
+      <Router>
+          <Routes />
+      </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
