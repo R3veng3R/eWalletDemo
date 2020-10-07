@@ -2,6 +2,7 @@ package com.kn.ewallet.service;
 
 import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.Wallet;
+import com.kn.ewallet.model.dto.BalanceRequestDTO;
 import com.kn.ewallet.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,14 @@ public class WalletService {
 
     public Optional<Wallet> getById(final UUID uuid) {
         return walletRepository.findById(uuid);
+    }
+
+    public boolean balanceRequest(final BalanceRequestDTO requestDTO) {
+        if (requestDTO.getType().equals("add")) {
+            return addBalance(requestDTO.getWalletId(), new BigDecimal(requestDTO.getSum()));
+        } else {
+            return withdraw(requestDTO.getWalletId(), new BigDecimal(requestDTO.getSum()));
+        }
     }
 
     public boolean addBalance(final UUID uuid, final BigDecimal amount) {
