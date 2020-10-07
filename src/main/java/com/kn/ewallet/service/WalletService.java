@@ -1,5 +1,6 @@
 package com.kn.ewallet.service;
 
+import com.kn.ewallet.exception.LowBalanceException;
 import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.Wallet;
 import com.kn.ewallet.model.dto.BalanceRequestDTO;
@@ -77,7 +78,7 @@ public class WalletService {
         return false;
     }
 
-    public boolean withdraw(final UUID uuid, final BigDecimal amount) {
+    public boolean withdraw(final UUID uuid, final BigDecimal amount) throws LowBalanceException {
         final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
 
         if (toFindWallet.isPresent()) {
@@ -88,6 +89,9 @@ public class WalletService {
                 wallet.setBalance(balance);
                 walletRepository.save(wallet);
                 return true;
+
+            } else {
+                throw new LowBalanceException("Not enough balance for this operation");
             }
         }
 

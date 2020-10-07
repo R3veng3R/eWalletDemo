@@ -1,5 +1,6 @@
 package com.kn.ewallet.service;
 
+import com.kn.ewallet.exception.LowBalanceException;
 import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.Wallet;
 import org.junit.jupiter.api.AfterEach;
@@ -63,13 +64,14 @@ class WalletServiceTest {
 
     @Test
     public void cannot_withdraw() {
-        final User savedUser = userService.save(this.testUser);
-        assertNotNull(savedUser);
+        assertThrows(LowBalanceException.class, () -> {
+            final User savedUser = userService.save(this.testUser);
+            assertNotNull(savedUser);
 
-        final Wallet testWallet = walletService.saveWalletToUser(savedUser);
+            final Wallet testWallet = walletService.saveWalletToUser(savedUser);
 
-        boolean result = walletService.withdraw(testWallet.getId(), new BigDecimal("1000"));
-        assertFalse(result);
+            walletService.withdraw(testWallet.getId(), new BigDecimal("1000"));
+        });
     }
 
     @Test

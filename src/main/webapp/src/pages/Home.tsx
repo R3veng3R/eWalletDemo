@@ -6,6 +6,7 @@ import styled from "styled-components";
 import {WalletPreview} from "../components/WalletPreview";
 import {toast, ToastContainer} from "react-toastify";
 import {Loader} from "../components/loader";
+import {AxiosError} from "axios";
 
 const Container = styled.div`
     padding-top: 2rem;
@@ -64,14 +65,14 @@ export const HomePage: React.FC = () => {
         }
 
         setLoading(true);
-        const result = await Api.put("/api/wallet", request);
 
-        if (result.data === true) {
+        try {
+            await Api.put("/api/wallet", request);
             await getWallets();
             toast.success("Balance has been updated");
 
-        } else {
-            toast.error("Couldn't update balance. There is probably not enough credit.");
+        } catch (exception) {
+            toast.error(exception.response.data);
         }
 
         setLoading(false);
