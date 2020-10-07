@@ -1,11 +1,13 @@
 package com.kn.ewallet.service;
 
 import com.kn.ewallet.exception.LowBalanceException;
+import com.kn.ewallet.exception.WalletNotFoundException;
 import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.Wallet;
 import com.kn.ewallet.model.dto.BalanceRequestDTO;
 import com.kn.ewallet.model.enums.BalanceRequestType;
 import com.kn.ewallet.repository.WalletRepository;
+import com.kn.ewallet.util.AppConstants;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -78,7 +80,7 @@ public class WalletService {
         return false;
     }
 
-    public boolean withdraw(final UUID uuid, final BigDecimal amount) throws LowBalanceException {
+    public boolean withdraw(final UUID uuid, final BigDecimal amount) throws LowBalanceException, WalletNotFoundException {
         final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
 
         if (toFindWallet.isPresent()) {
@@ -89,13 +91,13 @@ public class WalletService {
                 wallet.setBalance(balance);
                 walletRepository.save(wallet);
                 return true;
-
             } else {
-                throw new LowBalanceException("Not enough balance for this operation");
+                throw new LowBalanceException(AppConstants.LOW_BALANCE_MESSAGE);
             }
-        }
 
-        return false;
+        } else {
+            throw new WalletNotFoundException(AppConstants.WALLET_NOT_FOUND_MESSAGE);
+        }
     }
 
     private boolean isNotNegativeBalance(final BigDecimal value) {
