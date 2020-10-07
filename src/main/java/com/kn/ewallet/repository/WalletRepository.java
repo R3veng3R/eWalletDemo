@@ -9,6 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface WalletRepository extends JpaRepository<Wallet, UUID> {
-    Optional<Wallet> findById(final String uuid);
+    Optional<Wallet> findById(final UUID uuid);
     List<Wallet> findAllByUserOrderByCreatedAtDesc(final User user);
 }

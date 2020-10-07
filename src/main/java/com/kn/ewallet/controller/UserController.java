@@ -18,9 +18,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDTO> getUser() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(userService.getUser());
+    public UserDTO getUser() {
+        return userService.getUser();
     }
 }
