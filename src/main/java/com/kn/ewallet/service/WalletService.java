@@ -6,6 +6,7 @@ import com.kn.ewallet.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class WalletService {
     @Transactional
     public Wallet saveWallet(final User user) {
         final Wallet wallet = Wallet.builder()
-                .balance(0.00)
+                .balance(BigDecimal.valueOf(0.00))
                 .user(user)
                 .build();
 
@@ -37,12 +38,12 @@ public class WalletService {
     }
 
     @Transactional
-    public boolean addBalance(final UUID uuid, double amount) {
+    public boolean addBalance(final UUID uuid, final BigDecimal amount) {
         final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
 
         if (toFindWallet.isPresent()) {
             final Wallet wallet = toFindWallet.get();
-            double balance = wallet.getBalance() + amount;
+            final BigDecimal balance = wallet.getBalance().add(amount);
 
             wallet.setBalance(balance);
             walletRepository.save(wallet);
@@ -53,14 +54,14 @@ public class WalletService {
     }
 
     @Transactional
-    public boolean withdraw(final UUID uuid, final double amount) {
+    public boolean withdraw(final UUID uuid, final BigDecimal amount) {
         final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
 
         if (toFindWallet.isPresent()) {
             final Wallet wallet = toFindWallet.get();
-            double balance = wallet.getBalance() - amount;
+            final BigDecimal balance = wallet.getBalance().subtract(amount);
 
-            if (balance >= 0) {
+            if (isNotNegativeBalance(balance)) {
                 wallet.setBalance(balance);
                 walletRepository.save(wallet);
                 return true;
@@ -68,5 +69,9 @@ public class WalletService {
         }
 
         return false;
+    }
+
+    private boolean isNotNegativeBalance(final BigDecimal value) {
+        return value.compareTo(new BigDecimal("0.00")) > -1;
     }
 }

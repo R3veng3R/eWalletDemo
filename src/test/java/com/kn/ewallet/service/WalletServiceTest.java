@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,12 +53,12 @@ class WalletServiceTest {
         assertNotNull(savedUser);
 
         final Wallet testWallet = walletService.saveWallet(savedUser);
-        double newBalance = testWallet.getBalance() + 1000;
+        final BigDecimal newBalance = testWallet.getBalance().add(new BigDecimal("1000"));
 
         walletService.addBalance(testWallet.getId(), newBalance);
 
         final Optional<Wallet> wallet = walletService.getById(testWallet.getId());
-        assertEquals(newBalance, wallet.get().getBalance());
+        assertEquals(wallet.get().getBalance().compareTo(newBalance), 0);
     }
 
     @Test
@@ -67,7 +68,7 @@ class WalletServiceTest {
 
         final Wallet testWallet = walletService.saveWallet(savedUser);
 
-        boolean result = walletService.withdraw(testWallet.getId(), 1000);
+        boolean result = walletService.withdraw(testWallet.getId(), new BigDecimal("1000"));
         assertFalse(result);
     }
 
@@ -78,10 +79,10 @@ class WalletServiceTest {
         assertNotNull(savedUser);
 
         final Wallet testWallet = walletService.saveWallet(savedUser);
-        double newBalance = testWallet.getBalance() + amount;
+        final BigDecimal newBalance = testWallet.getBalance().add(BigDecimal.valueOf(amount));
         walletService.addBalance(testWallet.getId(), newBalance);
 
-        boolean result = walletService.withdraw(testWallet.getId(), amount);
+        boolean result = walletService.withdraw(testWallet.getId(), BigDecimal.valueOf(amount));
         assertTrue(result);
     }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -27,7 +28,7 @@ public class Wallet {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    private double balance;
+    private BigDecimal balance;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
