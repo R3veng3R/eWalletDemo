@@ -1,14 +1,13 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
+const API_HOST = process.env.REACT_APP_API_HOST ? process.env.REACT_APP_API_HOST : 'localhost'
+
 module.exports = function(app) {
     app.use(
-        '/backend',
+        '/api',
         createProxyMiddleware({
-            target: 'http://localhost:8080',
+            target: `http://${API_HOST}:8080`,
             changeOrigin: true,
-            pathRewrite: {
-                '^/backend': '/'
-            }
         })
     );
 };
