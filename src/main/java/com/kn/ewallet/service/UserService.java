@@ -35,4 +35,8 @@ public class UserService {
 
         return null;
     }
+
+    public User getAuthenticatedUser() {
+        return userRepository.findByName("Simple Test User").get();
+    }
 }

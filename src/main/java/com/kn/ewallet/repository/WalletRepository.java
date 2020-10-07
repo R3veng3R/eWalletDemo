@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface WalletRepository extends JpaRepository<Wallet, UUID> {
     Optional<Wallet> findById(final UUID uuid);
-    List<Wallet> findAllByUser(final User user);
+    List<Wallet> findAllByUserOrderByCreatedAtDesc(final User user);
 }

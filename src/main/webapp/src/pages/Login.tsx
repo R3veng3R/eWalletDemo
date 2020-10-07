@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {LoginForm} from "../components/LoginForm";
 import {FormikValues} from "formik";
 import styled from "styled-components";
-import {Redirect, RouteComponentProps, withRouter} from "react-router";
-import {authenticate, saveAuthData} from "../utils/Auth";
+import {Redirect, RouteComponentProps} from "react-router";
+import {Auth} from "../utils/Auth";
 import {Api} from "../utils/Api";
 import {User} from "../types";
 
@@ -16,12 +16,12 @@ export const Login: React.FC<RouteComponentProps> = () => {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
     const login = async (formValues: FormikValues) => {
-        saveAuthData(formValues);
+        Auth.saveData(formValues);
         const result = await Api.get("/api/user");
 
         if (result.status === 200) {
             const user: User = result.data;
-            authenticate(user);
+            Auth.authenticate(user);
             setLoggedIn(true);
         } else {
             // TODO: error
