@@ -6,6 +6,7 @@ import {Routes} from "./router/Routes";
 import {BrowserRouter as Router} from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GlobalStyles = createGlobalStyle`
     body {

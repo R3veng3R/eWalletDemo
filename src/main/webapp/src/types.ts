@@ -8,3 +8,14 @@ export interface Wallet {
     balance: Number;
     createdAt: Date;
 }
+
+export interface BalanceRequest {
+    walletId: string;
+    sum: string;
+    type: BalanceRequestType;
+}
+
+export enum BalanceRequestType {
+    Add = "add",
+    Withdraw = "withdraw"
+}

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Api} from "../utils/Api";
-import {Wallet} from "../types";
+import {BalanceRequest, Wallet} from "../types";
 import {Button, ListGroup} from "react-bootstrap";
 import styled from "styled-components";
 import {WalletPreview} from "../components/WalletPreview";
+import {toast, ToastContainer} from "react-toastify";
 
 const Container = styled.div`
     padding-top: 2rem;
@@ -32,7 +33,7 @@ export const HomePage: React.FC = () => {
         if (walletList.status == 200) {
             setWalletList(walletList.data);
         } else {
-            throw new Error("Could not get wallet list");
+            toast.error("Could not get wallet list");
         }
     }
 
@@ -41,8 +42,26 @@ export const HomePage: React.FC = () => {
 
         if (result.status == 200) {
             await getWallets();
+            toast.success("New wallet created");
+
         } else {
-            throw new Error("Couldn't create new wallet");
+            toast.error("Couldn't create new wallet");
+        }
+    }
+
+    const changeBalanceRequest = async (request: BalanceRequest) => {
+        if(Number(request.sum) === 0 ) {
+            return;
+        }
+
+        const result = await Api.put("/api/wallet", request);
+
+        if (result.data === true) {
+            await getWallets();
+            toast.success("Balance has been updated");
+
+        } else {
+            toast.error("Couldn't update balance. There is probably not enough credit.");
         }
     }
 
@@ -56,11 +75,22 @@ export const HomePage: React.FC = () => {
                 {
                     walletList.map( wallet =>
                         <ListGroup.Item key={wallet.id}>
-                            <WalletPreview wallet={wallet} />
+                            <WalletPreview wallet={wallet} onButtonClick={changeBalanceRequest}/>
                         </ListGroup.Item>
                     )
                 }
             </ListGroup>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                pauseOnHover
+            />
         </Container>
     );
 }
