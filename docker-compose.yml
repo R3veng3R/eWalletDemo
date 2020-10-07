@@ -1,0 +1,26 @@
+version: "3"
+services:
+  ewallet-api:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - ewallet-network
+
+  ewallet-frontend:
+    build: ./src/main/webapp/
+    container_name: ewallet_frontend
+    environment:
+      - REACT_APP_API_HOST=ewallet-api
+    ports:
+      - "3000:3000"
+    links:
+        - ewallet-api
+    networks:
+      - ewallet-network
+    depends_on:
+      - ewallet-api
+
+networks:
+  ewallet-network:
+      driver: bridge
