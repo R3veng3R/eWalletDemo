@@ -24,7 +24,6 @@ export const Login: React.FC<RouteComponentProps> = () => {
             Auth.authenticate(user);
             setLoggedIn(true);
         } else {
-            // TODO: error
         }
     }
 
