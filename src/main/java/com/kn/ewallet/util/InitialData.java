@@ -9,6 +9,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class InitialData {
     private final UserRepository userRepository;
@@ -33,10 +35,12 @@ public class InitialData {
         testUser = userRepository.save(testUser);
 
         final Wallet wallet1 = Wallet.builder()
+                .balance(BigDecimal.valueOf(0.00))
                 .user(testUser)
                 .build();
 
         final Wallet wallet2 = Wallet.builder()
+                .balance(BigDecimal.valueOf(0.00))
                 .user(testUser)
                 .build();
 
