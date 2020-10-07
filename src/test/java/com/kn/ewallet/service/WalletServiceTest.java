@@ -41,7 +41,7 @@ class WalletServiceTest {
         final User savedUser = userService.save(this.testUser);
         assertNotNull(savedUser);
 
-        final Wallet wallet = walletService.saveWallet(savedUser);
+        final Wallet wallet = walletService.saveWalletToUser(savedUser);
 
         assertNotNull(wallet);
         assertEquals(wallet.getUser(), savedUser);
@@ -52,7 +52,7 @@ class WalletServiceTest {
         final User savedUser = userService.save(this.testUser);
         assertNotNull(savedUser);
 
-        final Wallet testWallet = walletService.saveWallet(savedUser);
+        final Wallet testWallet = walletService.saveWalletToUser(savedUser);
         final BigDecimal newBalance = testWallet.getBalance().add(new BigDecimal("1000"));
 
         walletService.addBalance(testWallet.getId(), newBalance);
@@ -66,7 +66,7 @@ class WalletServiceTest {
         final User savedUser = userService.save(this.testUser);
         assertNotNull(savedUser);
 
-        final Wallet testWallet = walletService.saveWallet(savedUser);
+        final Wallet testWallet = walletService.saveWalletToUser(savedUser);
 
         boolean result = walletService.withdraw(testWallet.getId(), new BigDecimal("1000"));
         assertFalse(result);
@@ -78,7 +78,7 @@ class WalletServiceTest {
         final User savedUser = userService.save(this.testUser);
         assertNotNull(savedUser);
 
-        final Wallet testWallet = walletService.saveWallet(savedUser);
+        final Wallet testWallet = walletService.saveWalletToUser(savedUser);
         final BigDecimal newBalance = testWallet.getBalance().add(BigDecimal.valueOf(amount));
         walletService.addBalance(testWallet.getId(), newBalance);
 

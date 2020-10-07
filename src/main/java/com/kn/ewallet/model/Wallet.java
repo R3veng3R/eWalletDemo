@@ -1,13 +1,18 @@
 package com.kn.ewallet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -30,7 +35,11 @@ public class Wallet {
 
     private BigDecimal balance;
 
-    @ManyToOne
+    @Column(name="created_at", updatable = false, nullable = false)
+    private Instant createdAt;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 }

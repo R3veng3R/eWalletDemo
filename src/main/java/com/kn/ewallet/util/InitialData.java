@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 @Component
 public class InitialData {
@@ -35,11 +36,13 @@ public class InitialData {
         testUser = userRepository.save(testUser);
 
         final Wallet wallet1 = Wallet.builder()
+                .createdAt(Instant.now())
                 .balance(BigDecimal.valueOf(0.00))
                 .user(testUser)
                 .build();
 
         final Wallet wallet2 = Wallet.builder()
+                .createdAt(Instant.now())
                 .balance(BigDecimal.valueOf(0.00))
                 .user(testUser)
                 .build();
