@@ -7,7 +7,6 @@ import com.kn.ewallet.model.Wallet;
 import com.kn.ewallet.model.dto.BalanceRequestDTO;
 import com.kn.ewallet.model.enums.BalanceRequestType;
 import com.kn.ewallet.repository.WalletRepository;
-import com.kn.ewallet.util.AppConstants;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -59,9 +58,9 @@ public class WalletService {
 
     public boolean balanceRequest(final BalanceRequestDTO requestDTO) {
         if (hasAddRequest(requestDTO.getType())) {
-            return addBalance(requestDTO.getWalletId(), new BigDecimal(requestDTO.getSum()));
+            return addBalance(requestDTO.getWalletId(), requestDTO.getSum());
         } else {
-            return withdraw(requestDTO.getWalletId(), new BigDecimal(requestDTO.getSum()));
+            return withdraw(requestDTO.getWalletId(), requestDTO.getSum());
         }
     }
 
@@ -75,9 +74,10 @@ public class WalletService {
             wallet.setBalance(balance);
             walletRepository.save(wallet);
             return true;
-        }
 
-        return false;
+        } else {
+            throw new WalletNotFoundException();
+        }
     }
 
     public boolean withdraw(final UUID uuid, final BigDecimal amount) throws LowBalanceException, WalletNotFoundException {
@@ -92,16 +92,16 @@ public class WalletService {
                 walletRepository.save(wallet);
                 return true;
             } else {
-                throw new LowBalanceException(AppConstants.LOW_BALANCE_MESSAGE);
+                throw new LowBalanceException();
             }
 
         } else {
-            throw new WalletNotFoundException(AppConstants.WALLET_NOT_FOUND_MESSAGE);
+            throw new WalletNotFoundException();
         }
     }
 
     private boolean isNotNegativeBalance(final BigDecimal value) {
-        return value.compareTo(new BigDecimal("0.00")) > -1;
+      return value != null && value.compareTo(BigDecimal.ZERO) > -1;
     }
 
     private boolean hasAddRequest(final String type) {

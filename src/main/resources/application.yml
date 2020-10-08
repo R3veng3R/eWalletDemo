@@ -10,3 +10,9 @@ spring:
 
   datasource:
     url: jdbc:h2:mem:~/h2/ewallet
+
+test:
+  user:
+    username: "user"
+    name: "Simple Test User"
+    password: "123123"

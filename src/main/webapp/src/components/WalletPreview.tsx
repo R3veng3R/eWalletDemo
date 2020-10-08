@@ -40,8 +40,8 @@ export const WalletPreview: React.FC<Props> = ({ wallet, onButtonClick }) => {
     return (
         <Container>
             <div>
-                <p><strong>{wallet.id}</strong></p>
-                <p>Balance: {wallet.balance.toFixed(2)} €</p>
+                <p>WALLET ID: <strong>{wallet.id}</strong></p>
+                <p>Balance: <strong>{wallet.balance.toFixed(2)} €</strong></p>
             </div>
 
             <div>

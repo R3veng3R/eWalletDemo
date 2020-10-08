@@ -1,9 +1,9 @@
 package com.kn.ewallet.model.dto;
 
-import com.kn.ewallet.model.enums.BalanceRequestType;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder
@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BalanceRequestDTO implements Serializable {
-    private String sum;
+    private BigDecimal sum;
     private String type;
     private UUID walletId;
 }
