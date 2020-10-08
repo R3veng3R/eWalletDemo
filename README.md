@@ -18,6 +18,10 @@ React app is located under src/main/webapp folder
 Login user is already preinserted into the username and password fields for you.
 Test user credentials are: user:123123
 
+Spring basic authentication is used to protect endpoints. In the real-world project
+JWT token would've been used for this measures 
+
+
 * When running locally the system is using in memory H2 database for
 fast development.
 * When running in docker latest Postgres DB is used
