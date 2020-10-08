@@ -3,6 +3,8 @@ package com.kn.ewallet.service;
 import com.kn.ewallet.exception.LowBalanceException;
 import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.Wallet;
+import com.kn.ewallet.model.dto.BalanceRequestDTO;
+import com.kn.ewallet.model.enums.BalanceRequestType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,7 +58,13 @@ class WalletServiceTest {
         final Wallet testWallet = walletService.saveWalletToUser(savedUser);
         final BigDecimal newBalance = testWallet.getBalance().add(new BigDecimal("1000"));
 
-        walletService.addBalance(testWallet.getId(), newBalance);
+        final BalanceRequestDTO dto = BalanceRequestDTO.builder()
+                .sum(newBalance)
+                .walletId(testWallet.getId())
+                .type(BalanceRequestType.ADD.toString())
+                .build();
+
+        walletService.addBalance(dto);
 
         final Optional<Wallet> wallet = walletService.getById(testWallet.getId());
         assertEquals(wallet.get().getBalance().compareTo(newBalance), 0);
@@ -70,7 +78,13 @@ class WalletServiceTest {
 
             final Wallet testWallet = walletService.saveWalletToUser(savedUser);
 
-            walletService.withdraw(testWallet.getId(), new BigDecimal("1000"));
+            final BalanceRequestDTO dto = BalanceRequestDTO.builder()
+                    .sum(new BigDecimal("1000"))
+                    .walletId(testWallet.getId())
+                    .type(BalanceRequestType.WITHDRAW.toString())
+                    .build();
+
+            walletService.withdraw(dto);
         });
     }
 
@@ -82,9 +96,17 @@ class WalletServiceTest {
 
         final Wallet testWallet = walletService.saveWalletToUser(savedUser);
         final BigDecimal newBalance = testWallet.getBalance().add(BigDecimal.valueOf(amount));
-        walletService.addBalance(testWallet.getId(), newBalance);
 
-        boolean result = walletService.withdraw(testWallet.getId(), BigDecimal.valueOf(amount));
+        final BalanceRequestDTO dto = BalanceRequestDTO.builder()
+                .sum(newBalance)
+                .walletId(testWallet.getId())
+                .type(BalanceRequestType.ADD.toString())
+                .build();
+
+        walletService.addBalance(dto);
+
+        dto.setType(BalanceRequestType.WITHDRAW.toString());
+        boolean result = walletService.withdraw(dto);
         assertTrue(result);
     }
 }
