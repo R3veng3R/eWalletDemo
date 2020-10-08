@@ -6,7 +6,6 @@ import styled from "styled-components";
 import {WalletPreview} from "../components/WalletPreview";
 import {toast, ToastContainer} from "react-toastify";
 import {Loader} from "../components/loader";
-import {AxiosError} from "axios";
 
 const Container = styled.div`
     padding-top: 2rem;
@@ -34,7 +33,7 @@ export const HomePage: React.FC = () => {
         setLoading(true);
         const walletList = await Api.get("/api/wallet");
 
-        if (walletList.status == 200) {
+        if (walletList.status === 200) {
             setWalletList(walletList.data);
         } else {
             toast.error("Could not get wallet list");
@@ -47,7 +46,7 @@ export const HomePage: React.FC = () => {
         setLoading(true);
         const result = await Api.post("/api/wallet");
 
-        if (result.status == 200) {
+        if (result.status === 200) {
             await getWallets();
             toast.success("New wallet created");
 
