@@ -109,4 +109,59 @@ class WalletServiceTest {
         boolean result = walletService.withdraw(dto);
         assertTrue(result);
     }
+
+    @Test
+    public void can_transfer_to_another_account() {
+        final BigDecimal sumToTransfer = BigDecimal.valueOf(1000);
+        final User savedUser = userService.save(this.testUser);
+        assertNotNull(savedUser);
+
+        final Wallet fromWallet = walletService.saveWalletToUser(savedUser);
+        final Wallet transferToWallet = walletService.saveWalletToUser(savedUser);
+
+        final BalanceRequestDTO addBalanceDto = BalanceRequestDTO.builder()
+                .sum(sumToTransfer)
+                .walletId(fromWallet.getId())
+                .type(BalanceRequestType.ADD.toString())
+                .build();
+
+        final boolean isAddedBalance = walletService.addBalance(addBalanceDto);
+        assertTrue(isAddedBalance);
+
+        final BalanceRequestDTO transferBalanceDTO = BalanceRequestDTO.builder()
+                .sum(sumToTransfer)
+                .walletId(fromWallet.getId())
+                .transferToId(transferToWallet.getId())
+                .type(BalanceRequestType.TRANSFER.toString())
+                .build();
+
+        walletService.balanceRequest(transferBalanceDTO);
+
+        final Wallet transferredBalanceWallet = walletService.getById(transferToWallet.getId()).get();
+        assertEquals(transferredBalanceWallet.getBalance().compareTo(sumToTransfer), 0);
+
+        final Wallet withdrawnBalanceWallet = walletService.getById(fromWallet.getId()).get();
+        assertEquals(withdrawnBalanceWallet.getBalance().compareTo(sumToTransfer), -1);
+    }
+
+    @Test
+    public void can_not_transfer_to_another_account() {
+        assertThrows(LowBalanceException.class, () -> {
+            final BigDecimal sumToTransfer = BigDecimal.valueOf(1000);
+            final User savedUser = userService.save(this.testUser);
+            assertNotNull(savedUser);
+
+            final Wallet fromWallet = walletService.saveWalletToUser(savedUser);
+            final Wallet transferToWallet = walletService.saveWalletToUser(savedUser);
+
+            final BalanceRequestDTO transferBalanceDTO = BalanceRequestDTO.builder()
+                    .sum(sumToTransfer)
+                    .walletId(fromWallet.getId())
+                    .transferToId(transferToWallet.getId())
+                    .type(BalanceRequestType.TRANSFER.toString())
+                    .build();
+
+            walletService.balanceRequest(transferBalanceDTO);
+        });
+    }
 }

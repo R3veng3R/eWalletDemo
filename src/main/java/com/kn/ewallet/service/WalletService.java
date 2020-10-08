@@ -63,9 +63,11 @@ public class WalletService {
         } else if (isWithdrawRequest(requestDTO.getType())) {
             return withdraw(requestDTO);
 
-        } else {
-            return transferToWallet(requestDTO);
+        } else if (isTransferRequest(requestDTO.getType())){
+            return transferWalletToWallet(requestDTO);
         }
+
+        return false;
     }
 
     public boolean addBalance(final BalanceRequestDTO requestDTO) {
@@ -104,7 +106,7 @@ public class WalletService {
         }
     }
 
-    public boolean transferToWallet(final BalanceRequestDTO requestDTO) {
+    public boolean transferWalletToWallet(final BalanceRequestDTO requestDTO) {
         final boolean isTakenFromAccount = withdraw(requestDTO);
 
         if (isTakenFromAccount) {
@@ -112,8 +114,8 @@ public class WalletService {
             return addBalance(requestDTO);
         }
 
-        // System will throw exception before returning this true
-        return true;
+        // System will throw exception before this boolean value is returned
+        return false;
     }
 
     private boolean isNotNegativeBalance(final BigDecimal value) {
@@ -126,5 +128,9 @@ public class WalletService {
 
     private boolean isWithdrawRequest(final String type) {
         return BalanceRequestType.WITHDRAW.toString().equals(type);
+    }
+
+    private boolean isTransferRequest(final String type) {
+        return BalanceRequestType.TRANSFER.toString().equals(type);
     }
 }
