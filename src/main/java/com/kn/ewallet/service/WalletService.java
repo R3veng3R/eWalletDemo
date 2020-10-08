@@ -58,9 +58,9 @@ public class WalletService {
 
     public boolean balanceRequest(final BalanceRequestDTO requestDTO) {
         if (hasAddRequest(requestDTO.getType())) {
-            return addBalance(requestDTO.getWalletId(), new BigDecimal(requestDTO.getSum()));
+            return addBalance(requestDTO.getWalletId(), requestDTO.getSum());
         } else {
-            return withdraw(requestDTO.getWalletId(), new BigDecimal(requestDTO.getSum()));
+            return withdraw(requestDTO.getWalletId(), requestDTO.getSum());
         }
     }
 
