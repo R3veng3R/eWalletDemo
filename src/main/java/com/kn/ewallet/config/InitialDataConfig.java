@@ -1,9 +1,10 @@
-package com.kn.ewallet.util;
+package com.kn.ewallet.config;
 
 import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.Wallet;
 import com.kn.ewallet.repository.UserRepository;
 import com.kn.ewallet.repository.WalletRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,14 +14,20 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Component
-public class InitialData {
+public class InitialDataConfig {
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public InitialData(final UserRepository userRepository,
-                       final WalletRepository walletRepository,
-                       final PasswordEncoder passwordEncoder) {
+    @Value("${test.user.name}")
+    private String testUserName;
+
+    @Value("${test.user.password}")
+    private String testUserPassword;
+
+    public InitialDataConfig(final UserRepository userRepository,
+                             final WalletRepository walletRepository,
+                             final PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
         this.passwordEncoder = passwordEncoder;
@@ -29,8 +36,8 @@ public class InitialData {
     @EventListener
     public void saveData(final ApplicationReadyEvent event) {
         User testUser = User.builder()
-                .name("Simple Test User")
-                .password(this.passwordEncoder.encode("123123"))
+                .name(testUserName)
+                .password(this.passwordEncoder.encode(testUserPassword))
                 .build();
 
         testUser = userRepository.save(testUser);
