@@ -9,7 +9,7 @@ services:
       POSTGRES_DB: ewallet
       PGDATA: /data/postgres
     volumes:
-      - ./docker/postgres:/data/postgres
+      - ./docker/postgres/data:/data/postgres
     ports:
       - "5432:5432"
     networks:
@@ -19,6 +19,8 @@ services:
     build: .
     ports:
       - "8080:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
     links:
       - ewallet-postgres
     networks:
