@@ -27,6 +27,8 @@ fast development.
 
 ```bash
 Make sure you have docker-compose installed.
+Clone the project.
+
 From the root folder execute these commands in terminal:
 1. ./gradlew bootJar (for Docker to pickup executable jar)
 2. docker-compose up
