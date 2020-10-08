@@ -30,12 +30,12 @@ export const HomePage: React.FC = () => {
 
     const getWallets = async () => {
         setLoading(true);
-        const walletList = await Api.get("/api/wallet");
 
-        if (walletList.status === 200) {
+        try {
+            const walletList = await Api.get("/api/wallet");
             setWalletList(walletList.data);
-        } else {
-            toast.error("Could not get wallet list");
+        } catch (exception) {
+            toast.error(exception.response.data);
         }
 
         setLoading(false);
@@ -43,14 +43,14 @@ export const HomePage: React.FC = () => {
 
     const createWallet = async () => {
         setLoading(true);
-        const result = await Api.post("/api/wallet");
 
-        if (result.status === 200) {
+        try {
+            await Api.post("/api/wallet");
             await getWallets();
             toast.success("New wallet created");
 
-        } else {
-            toast.error("Couldn't create new wallet");
+        } catch (exception) {
+            toast.error(exception.response.data);
         }
 
         setLoading(false);
