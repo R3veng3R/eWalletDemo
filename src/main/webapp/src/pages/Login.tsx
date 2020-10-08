@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {LoginForm} from "../components/LoginForm";
 import {FormikValues} from "formik";
 import styled from "styled-components";

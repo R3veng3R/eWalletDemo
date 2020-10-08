@@ -1,7 +1,7 @@
 import React from 'react';
 import {Formik, Form as FormikForm, FormikValues} from 'formik';
 import * as Yup from 'yup';
-import {Button, Form, FormControl, InputGroup} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {APP_TEST_USER_PASSWORD, APP_TEST_USERNAME} from "../constants/AppConstants";
 
 type ResultFormProps = {
