@@ -15,4 +15,5 @@ public class BalanceRequestDTO implements Serializable {
     private BigDecimal sum;
     private String type;
     private UUID walletId;
+    private UUID transferToId;
 }

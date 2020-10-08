@@ -26,7 +26,6 @@ export const HomePage: React.FC = () => {
 
     useEffect(() => {
         getWallets();
-
     }, []);
 
     const getWallets = async () => {

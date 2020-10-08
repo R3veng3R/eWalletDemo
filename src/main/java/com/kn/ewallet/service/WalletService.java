@@ -57,19 +57,25 @@ public class WalletService {
     }
 
     public boolean balanceRequest(final BalanceRequestDTO requestDTO) {
-        if (hasAddRequest(requestDTO.getType())) {
-            return addBalance(requestDTO.getWalletId(), requestDTO.getSum());
-        } else {
-            return withdraw(requestDTO.getWalletId(), requestDTO.getSum());
+        if (isAddRequest(requestDTO.getType())) {
+            return addBalance(requestDTO);
+
+        } else if (isWithdrawRequest(requestDTO.getType())) {
+            return withdraw(requestDTO);
+
+        } else if (isTransferRequest(requestDTO.getType())){
+            return transferWalletToWallet(requestDTO);
         }
+
+        return false;
     }
 
-    public boolean addBalance(final UUID uuid, final BigDecimal amount) {
-        final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
+    public boolean addBalance(final BalanceRequestDTO requestDTO) {
+        final Optional<Wallet> toFindWallet = walletRepository.findById(requestDTO.getWalletId());
 
         if (toFindWallet.isPresent()) {
             final Wallet wallet = toFindWallet.get();
-            final BigDecimal balance = wallet.getBalance().add(amount);
+            final BigDecimal balance = wallet.getBalance().add(requestDTO.getSum());
 
             wallet.setBalance(balance);
             walletRepository.save(wallet);
@@ -80,12 +86,12 @@ public class WalletService {
         }
     }
 
-    public boolean withdraw(final UUID uuid, final BigDecimal amount) throws LowBalanceException, WalletNotFoundException {
-        final Optional<Wallet> toFindWallet = walletRepository.findById(uuid);
+    public boolean withdraw(final BalanceRequestDTO requestDTO) throws LowBalanceException, WalletNotFoundException {
+        final Optional<Wallet> toFindWallet = walletRepository.findById(requestDTO.getWalletId());
 
         if (toFindWallet.isPresent()) {
             final Wallet wallet = toFindWallet.get();
-            final BigDecimal balance = wallet.getBalance().subtract(amount);
+            final BigDecimal balance = wallet.getBalance().subtract(requestDTO.getSum());
 
             if (isNotNegativeBalance(balance)) {
                 wallet.setBalance(balance);
@@ -100,11 +106,31 @@ public class WalletService {
         }
     }
 
+    public boolean transferWalletToWallet(final BalanceRequestDTO requestDTO) {
+        final boolean isTakenFromAccount = withdraw(requestDTO);
+
+        if (isTakenFromAccount) {
+            requestDTO.setWalletId(requestDTO.getTransferToId());
+            return addBalance(requestDTO);
+        }
+
+        // System will throw exception before this boolean value is returned
+        return false;
+    }
+
     private boolean isNotNegativeBalance(final BigDecimal value) {
       return value != null && value.compareTo(BigDecimal.ZERO) > -1;
     }
 
-    private boolean hasAddRequest(final String type) {
+    private boolean isAddRequest(final String type) {
         return BalanceRequestType.ADD.toString().equals(type);
+    }
+
+    private boolean isWithdrawRequest(final String type) {
+        return BalanceRequestType.WITHDRAW.toString().equals(type);
+    }
+
+    private boolean isTransferRequest(final String type) {
+        return BalanceRequestType.TRANSFER.toString().equals(type);
     }
 }

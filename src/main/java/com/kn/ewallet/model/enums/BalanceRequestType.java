@@ -2,7 +2,8 @@ package com.kn.ewallet.model.enums;
 
 public enum BalanceRequestType {
     ADD("add"),
-    WITHDRAW("withdraw");
+    WITHDRAW("withdraw"),
+    TRANSFER("transfer");
 
     private final String text;
 

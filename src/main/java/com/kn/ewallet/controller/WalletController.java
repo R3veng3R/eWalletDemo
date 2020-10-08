@@ -5,7 +5,6 @@ import com.kn.ewallet.model.dto.BalanceRequestDTO;
 import com.kn.ewallet.service.WalletService;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
