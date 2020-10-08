@@ -1,11 +1,32 @@
 version: "3"
 services:
+  ewallet-postgres:
+    container_name: ewallet_postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ewallet
+      PGDATA: /data/postgres
+    volumes:
+      - ./docker/postgres/data:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - ewallet-network
+
   ewallet-api:
     build: .
     ports:
       - "8080:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    links:
+      - ewallet-postgres
     networks:
       - ewallet-network
+    depends_on:
+      - ewallet-postgres
 
   ewallet-frontend:
     build: ./src/main/webapp/
