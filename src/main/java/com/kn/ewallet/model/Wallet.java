@@ -5,12 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
@@ -20,6 +20,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 @Table(name = Wallet.TABLE_NAME)
 public class Wallet {
     public static final String TABLE_NAME = "wallets";
@@ -37,6 +38,9 @@ public class Wallet {
 
     @Column(name="created_at", updatable = false, nullable = false)
     private Instant createdAt;
+
+    @Version
+    private long version;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
