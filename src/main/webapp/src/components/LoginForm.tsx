@@ -1,6 +1,7 @@
 import React from 'react';
-import {Formik, Form as FormikForm, FormikValues} from 'formik';
+import {Form as FormikForm, Formik, FormikValues} from 'formik';
 import * as Yup from 'yup';
+import PropTypes from "prop-types";
 import {Button, Form} from "react-bootstrap";
 import {APP_TEST_USER_PASSWORD, APP_TEST_USERNAME} from "../constants/AppConstants";
 
@@ -74,3 +75,6 @@ export const LoginForm: React.FC<ResultFormProps> = ({onSubmit}) => (
     </>
 );
 
+LoginForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+}

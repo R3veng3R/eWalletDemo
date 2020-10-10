@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import LoaderSrc from "./assets/loader.svg";
 
@@ -25,4 +26,8 @@ export const Loader: React.FC<Props> = ({ isHidden }) => (
     <Container isHidden={isHidden} >
         <img src={LoaderSrc} alt="" />
     </Container>
-)
+);
+
+Loader.propTypes = {
+    isHidden: PropTypes.bool.isRequired
+}

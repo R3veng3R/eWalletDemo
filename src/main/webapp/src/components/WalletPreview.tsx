@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 import {BalanceRequest, BalanceRequestType, Wallet} from "../types";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import {Button, Form} from "react-bootstrap";
 
 const Container = styled.div`
@@ -60,4 +61,13 @@ export const WalletPreview: React.FC<Props> = ({ wallet, onButtonClick }) => {
             </div>
         </Container>
     )
+}
+
+WalletPreview.propTypes = {
+    wallet: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        balance: PropTypes.number.isRequired,
+        createdAt: PropTypes.string.isRequired,
+    }).isRequired,
+    onButtonClick: PropTypes.func.isRequired
 }

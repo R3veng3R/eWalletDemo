@@ -6,7 +6,7 @@ export interface User {
 export interface Wallet {
     id: string;
     balance: Number;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export interface BalanceRequest {
