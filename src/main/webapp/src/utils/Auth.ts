@@ -1,7 +1,9 @@
 import {FormikValues} from "formik";
 import {User} from "../types";
 
-export abstract class Auth {
+export class Auth {
+    private constructor() {}
+
     static saveData = (form: FormikValues) => {
         localStorage.setItem('username', form.name);
         localStorage.setItem('password', form.password);
