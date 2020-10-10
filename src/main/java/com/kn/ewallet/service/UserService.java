@@ -1,5 +1,6 @@
 package com.kn.ewallet.service;
 
+import com.kn.ewallet.config.TestUserConfig;
 import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.dto.UserDTO;
 import com.kn.ewallet.repository.UserRepository;
@@ -11,9 +12,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final TestUserConfig testUserConfig;
 
-    public UserService(final UserRepository userRepository) {
+    public UserService(final UserRepository userRepository,
+                       final TestUserConfig testUserConfig) {
         this.userRepository = userRepository;
+        this.testUserConfig = testUserConfig;
     }
 
     @Transactional
@@ -22,7 +26,7 @@ public class UserService {
     }
 
     public UserDTO getUser() {
-        final Optional<User> userToFind = userRepository.findByName("Simple Test User");
+        final Optional<User> userToFind = userRepository.findByName(testUserConfig.getName());
 
         if (userToFind.isPresent()){
             final User user = userToFind.get();
@@ -37,6 +41,6 @@ public class UserService {
     }
 
     public User getAuthenticatedUser() {
-        return userRepository.findByName("Simple Test User").get();
+        return userRepository.findByName(testUserConfig.getName()).get();
     }
 }

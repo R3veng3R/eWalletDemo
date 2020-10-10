@@ -4,40 +4,36 @@ import com.kn.ewallet.model.User;
 import com.kn.ewallet.model.Wallet;
 import com.kn.ewallet.repository.UserRepository;
 import com.kn.ewallet.repository.WalletRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Component
+@Configuration
 public class InitialDataConfig {
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Value("${test.user.name}")
-    private String testUserName;
-
-    @Value("${test.user.password}")
-    private String testUserPassword;
+    private final TestUserConfig testUserConfig;
 
     public InitialDataConfig(final UserRepository userRepository,
                              final WalletRepository walletRepository,
-                             final PasswordEncoder passwordEncoder) {
+                             final PasswordEncoder passwordEncoder,
+                             final TestUserConfig testUserConfig) {
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
         this.passwordEncoder = passwordEncoder;
+        this.testUserConfig = testUserConfig;
     }
 
     @EventListener
     public void saveData(final ApplicationReadyEvent event) {
         User testUser = User.builder()
-                .name(testUserName)
-                .password(this.passwordEncoder.encode(testUserPassword))
+                .name(testUserConfig.getName())
+                .password(this.passwordEncoder.encode(testUserConfig.getPassword()))
                 .build();
 
         testUser = userRepository.save(testUser);

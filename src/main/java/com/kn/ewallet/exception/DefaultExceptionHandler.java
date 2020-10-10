@@ -19,7 +19,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(WalletNotFoundException.class)
     public ResponseEntity<String> handleWalletNotFoundException(final WalletNotFoundException exception) {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_FOUND)
                 .body(exception.getMessage());
     }
 }

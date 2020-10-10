@@ -1,7 +1,6 @@
 package com.kn.ewallet.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,11 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${test.user.username}")
-    private String testUsername;
+    private final TestUserConfig testUserConfig;
 
-    @Value("${test.user.password}")
-    private String testUserPassword;
+    public SecurityConfig(final TestUserConfig testUserConfig) {
+        this.testUserConfig = testUserConfig;
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -39,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authentication) throws Exception {
         authentication.inMemoryAuthentication()
-                .withUser(testUsername)
-                .password(passwordEncoder().encode(testUserPassword))
+                .withUser(testUserConfig.getUsername())
+                .password(passwordEncoder().encode(testUserConfig.getPassword()))
                 .authorities("ROLE_USER");
     }
 
